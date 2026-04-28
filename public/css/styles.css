@@ -104,16 +104,20 @@ body::before {
 .stars-row label {
     cursor: pointer;
     font-size: 2.1rem;
+    /* inactive / unselected */
     color: rgba(255, 255, 255, 0.22);
-    transition: color 0.2s, transform 0.2s;
+    transition: color 0.18s ease, transform 0.18s ease;
     user-select: none;
     line-height: 1;
 }
 
-.stars-row label:hover, .stars-row label.active {
+/* Hover, focus and JS-driven "active" state should be yellow */
+.stars-row label:hover,
+.stars-row label:focus,
+.stars-row label.active {
     color: #ffd700;
     transform: translateY(-2px) scale(1.1);
-    text-shadow: 0 6px 18px rgba(255, 215, 0, 0.35);
+    text-shadow: 0 6px 18px rgba(255, 215, 0, 0.45);
 }
 
 .stars-row input {
