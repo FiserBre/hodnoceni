@@ -1,0 +1,9 @@
+node_modules
+npm-debug.log
+.env
+.DS_Store
+.git
+.gitignore
+logs
+tmp
+public/bg.avif
