@@ -16,15 +16,13 @@ const SMTP_SECURE = process.env.SMTP_SECURE
   : SMTP_PORT === 465;
 const FROM_EMAIL = process.env.FROM_EMAIL || SMTP_USER || 'hodnoceni@fiserbretislav.com';
 const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || 'fiserbretislav@email.cz';
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'admin123'; // change this!
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'admin123';
 
 app.use(express.json());
 app.use(express.static('public'));
 
-// --- In-memory fallback ---
 let memReviews = [];
 
-// --- Optional Postgres pool ---
 let pool = null;
 if (DATABASE_URL) {
   pool = new Pool({ connectionString: DATABASE_URL, ssl: sslOption(DATABASE_URL) });
@@ -54,7 +52,7 @@ function sslOption(cs) {
     : undefined;
 }
 
-// --- Email transport ---
+// Email setup
 let transporter = null;
 if (SMTP_HOST && SMTP_USER && SMTP_PASS) {
   transporter = nodemailer.createTransport({
@@ -73,20 +71,17 @@ async function sendBadReviewEmail(review) {
   await transporter.sendMail({
     from: FROM_EMAIL,
     to: NOTIFY_EMAIL,
-    subject: `⚠️ Nová negativní recenze (${review.overall_stars} hvězdiček)`,
+    subject: `⚠️ Nová negativní recenze`,
     html: `
       <h2>Negativní recenze</h2>
       <p><strong>Hvězdičky:</strong> ${review.overall_stars} / 5</p>
       <p><strong>Email zákazníka:</strong> ${review.email || '(nevyplněno)'}</p>
       <p><strong>Text recenze:</strong></p>
       <blockquote>${review.message || '(bez textu)'}</blockquote>
-      <hr/>
-      <p><em>Odesláno automaticky z hodnotícího systému.</em></p>
     `,
   });
 }
 
-// --- POST /api/reviews - submit a review ---
 app.post('/api/reviews', async (req, res) => {
   const { overall_stars, email, message } = req.body;
 
@@ -121,7 +116,6 @@ app.post('/api/reviews', async (req, res) => {
   }
 });
 
-// --- GET /api/reviews - admin: list all reviews ---
 app.get('/api/reviews', async (req, res) => {
   const token = req.headers['x-admin-token'];
   if (token !== ADMIN_TOKEN) return res.status(401).json({ ok: false, error: 'Neoprávněný přístup.' });
@@ -138,7 +132,6 @@ app.get('/api/reviews', async (req, res) => {
   }
 });
 
-// --- DELETE /api/reviews/:id - admin: delete review ---
 app.delete('/api/reviews/:id', async (req, res) => {
   const token = req.headers['x-admin-token'];
   if (token !== ADMIN_TOKEN) return res.status(401).json({ ok: false, error: 'Neoprávněný přístup.' });
@@ -156,7 +149,6 @@ app.delete('/api/reviews/:id', async (req, res) => {
   }
 });
 
-// --- GET /api/stats - admin stats ---
 app.get('/api/stats', async (req, res) => {
   const token = req.headers['x-admin-token'];
   if (token !== ADMIN_TOKEN) return res.status(401).json({ ok: false, error: 'Neoprávněný přístup.' });

@@ -11,7 +11,6 @@
 </head>
 <body>
 
-<!-- Login -->
 <div id="loginScreen">
   <div class="login-box">
     <input type="password" class="login-input" id="tokenInput" placeholder="Heslo" autocomplete="current-password"/>
@@ -20,13 +19,8 @@
   </div>
 </div>
 
-<!-- App -->
 <div id="app">
   <header class="topbar">
-    <div class="topbar-left">
-      <div class="topbar-logo">★</div>
-      <span class="topbar-title">Správa hodnocení</span>
-    </div>
     <div style="display:flex;gap:0.75rem;align-items:center">
       <a href="index.html" style="color:var(--text-muted);font-size:0.82rem;text-decoration:none;opacity:0.7">← Formulář</a>
       <button class="btn-logout" id="logoutBtn">Odhlásit</button>
@@ -34,7 +28,6 @@
   </header>
 
   <div class="container">
-    <!-- Stats -->
     <div class="stats-grid" id="statsGrid">
       <div class="stat-card"><div class="stat-label">Celkem recenzí</div><div class="stat-value" id="sTotal">—</div></div>
       <div class="stat-card"><div class="stat-label">Průměr hvězdiček</div><div class="stat-value gold" id="sAvg">—</div></div>
@@ -42,7 +35,6 @@
       <div class="stat-card"><div class="stat-label">5 hvězdiček</div><div class="stat-value green" id="sFive">—</div></div>
     </div>
 
-    <!-- Toolbar -->
     <div class="toolbar">
       <button class="filter-btn active" data-filter="all">Všechny</button>
       <button class="filter-btn" data-filter="positive">Pozitivní (4–5★)</button>
@@ -51,7 +43,6 @@
       <button class="refresh-btn" id="refreshBtn">↻ Obnovit</button>
     </div>
 
-    <!-- Table -->
     <div class="table-wrap">
       <div class="loading-state" id="loadingState">
         <div class="spinner"></div>
@@ -78,7 +69,6 @@
   </div>
 </div>
 
-<!-- Confirm delete -->
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
     <h3>Smazat recenzi?</h3>
@@ -201,7 +191,6 @@ document.getElementById('confirmDel').addEventListener('click', async () => {
   pendingDeleteId = null;
 });
 
-// Filters
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -216,7 +205,6 @@ document.getElementById('refreshBtn').addEventListener('click', () => {
   loadReviews();
 });
 
-// Login
 document.getElementById('loginBtn').addEventListener('click', tryLogin);
 document.getElementById('tokenInput').addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
 
@@ -224,7 +212,6 @@ async function tryLogin() {
   const val = document.getElementById('tokenInput').value.trim();
   if (!val) { document.getElementById('loginErr').textContent = 'Zadejte heslo.'; return; }
 
-  // Quick verify against stats endpoint
   TOKEN = val;
   const r = await fetch('/api/stats', { headers: { 'x-admin-token': TOKEN } });
   const d = await r.json();
