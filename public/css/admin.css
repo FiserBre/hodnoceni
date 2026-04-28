@@ -45,6 +45,9 @@ body {
     max-width: 420px;
     text-align: left;
     box-shadow: var(--shadow);
+}
+
+.login-box {
     font-size: 1.6rem;
     margin-bottom: 0.75rem;
     color: var(--text-muted);

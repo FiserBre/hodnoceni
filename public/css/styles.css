@@ -42,7 +42,7 @@ body::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(120deg, rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.62)), radial-gradient(circle at top, rgba(30, 167, 255, 0.18), transparent 55%);
+    background: linear-gradient(120deg, rgba(0, 0, 00, 0.82), rgba(0, 0, 0, 0.62)), radial-gradient(circle at top, rgba(30, 167, 255, 0.18), transparent 55%);
     z-index: -1;
 }
 

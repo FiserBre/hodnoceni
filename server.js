@@ -46,10 +46,11 @@ if (DATABASE_URL) {
   })();
 }
 
-const sslOption = (cs) =>
-  /amazonaws|render|railway|supabase|azure|gcp|neon|timescale|heroku/i.test(cs)
+function sslOption(cs) {
+  return /amazonaws|render|railway|supabase|azure|gcp|neon|timescale|heroku/i.test(cs)
     ? { rejectUnauthorized: false }
     : undefined;
+}
 
 // Email setup
 let transporter = null;
