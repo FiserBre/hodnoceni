@@ -11,10 +11,10 @@ Tok je navržený jako lehký: uživatel vybere 1–5 hvězd, volitelně doplní
 ```mermaid
 flowchart TB
     User[Customer] --> FormPage[Veřejná stránka recenzí]
-    FormPage --> MainJs[public scripts main js]
+    FormPage --> MainJs[public/scripts/main.js]
 
     subgraph PresentationLayer[Prezentační vrstva]
-        IndexHtml[public index html]
+        IndexHtml[public/index.html]
         MainJs
         MainStars[Hvězdičkové hodnocení]
         Hint[Nápověda k hodnocení]
