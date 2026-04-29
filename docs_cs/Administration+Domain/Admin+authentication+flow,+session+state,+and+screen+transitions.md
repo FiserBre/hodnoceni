@@ -19,13 +19,13 @@ flowchart TD
         LoginScreen
         AppScreen
         ConfirmOverlay[confirmOverlay]
-        AdminJs[public/scripts/admin.js]
+        AdminJs["public/scripts/admin.js"]
     end
 
     subgraph ApiLayer [API vrstva]
-        StatsApi[GET /api/stats]
-        ReviewsApi[GET /api/reviews]
-        DeleteApi[DELETE /api/reviews/{id}]
+        StatsApi["GET /api/stats"]
+        ReviewsApi["GET /api/reviews"]
+        DeleteApi["DELETE /api/reviews/{id}"]
     end
 
     LoginScreen --> AdminJs
