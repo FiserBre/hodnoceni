@@ -118,31 +118,45 @@ Funkce `tryLogin` je vstupním bodem autentizace: načte `tokenInput`, ořeže h
 
 ```mermaid
 sequenceDiagram
+    autonumber
     participant U as Admin uživatel
-    participant V as Přihlašovací obrazovka
+    participant V as UI (Prohlížeč)
     participant J as admin.js
-    participant A as API
+    participant A as API Server
 
-    U->>V: Zadání tokenu a klik na Přihlásit
-    V->>J: tryLogin
-    J->>J: Načtení tokenInput a trim
+    U->>V: Zadání tokenu a klik na "Přihlásit"
+    V->>J: tryLogin()
+    activate J
+    
+    Note over J: Trim & Sanitize input
+    
     alt Token je prázdný
-        J->>V: Zobrazit "Zadejte heslo"
+        J-->>V: Update UI: "Zadejte heslo"
     else Token vyplněn
-        J->>A: GET /api/stats s x-admin-token
-        A-->>J: JSON odpověď s ok a statistikami
-        alt ok je false
-            J->>J: Vymazat TOKEN
-            J->>V: Zobrazit "Nesprávné heslo"
-        else ok je true
-            J->>V: Skrýt loginScreen
-            J->>V: Zobrazit app
-            J->>J: Naplnit karty statistik
-            J->>A: GET /api/reviews s x-admin-token
-            A-->>J: JSON s recenzemi
-            J->>V: Vykreslit tabulku recenzí
+        J->>A: GET /api/stats (Header: x-admin-token)
+        activate A
+        A-->>J: JSON { ok: boolean, stats: object }
+        deactivate A
+        
+        alt ok == false (Unauthorized)
+            J->>J: Clear LocalStorage / Token
+            J-->>V: Update UI: "Nesprávné heslo"
+        else ok == true (Success)
+            rect rgb(230, 245, 255)
+                Note over V, J: Fáze překreslení UI
+                J->>V: hide(loginScreen) & show(app)
+                J->>V: renderStats(stats)
+            end
+            
+            J->>A: GET /api/reviews (Header: x-admin-token)
+            activate A
+            A-->>J: JSON [reviews]
+            deactivate A
+            
+            J->>V: renderReviewsTable(reviews)
         end
     end
+    deactivate J
 ```
 
 `tryLogin` tedy používá `GET /api/stats` zároveň jako ověření a jako první payload pro dashboard. Úspěšná odpověď okamžitě odemkne obrazovku a naplní metriky.
