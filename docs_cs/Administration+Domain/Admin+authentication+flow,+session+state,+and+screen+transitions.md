@@ -12,14 +12,14 @@ Průchod obrazovkami je rozdělen na dvě hlavní oblasti — `loginScreen` a `a
 
 ```mermaid
 flowchart TD
-    User[Admin uživatel] --> LoginScreen[loginScreen]
-    User --> AppScreen[app]
+    User[Admin uživatel] --> LoginScreen
+    User --> AppScreen
 
     subgraph PresentationLayer [Prezentační vrstva]
-        LoginScreen
-        AppScreen
-        ConfirmOverlay[confirmOverlay]
-        AdminJs["public/scripts/admin.js"]
+        LoginScreen([loginScreen])
+        AppScreen([app])
+        ConfirmOverlay([confirmOverlay])
+        AdminJs[[public/scripts/admin.js]]
     end
 
     subgraph ApiLayer [API vrstva]
@@ -28,19 +28,14 @@ flowchart TD
         DeleteApi["DELETE /api/reviews/{id}"]
     end
 
-    LoginScreen --> AdminJs
-    AppScreen --> AdminJs
-    ConfirmOverlay --> AdminJs
+    LoginScreen & AppScreen & ConfirmOverlay --> AdminJs
 
-    AdminJs -->|x-admin-token| StatsApi
-    AdminJs -->|x-admin-token| ReviewsApi
-    AdminJs -->|x-admin-token| DeleteApi
-
-    StatsApi --> AdminJs
-    ReviewsApi --> AdminJs
-    DeleteApi --> AdminJs
-    AdminJs --> LoginScreen
-    AdminJs --> AppScreen
+    AdminJs <-->|x-admin-token| StatsApi
+    AdminJs <-->|x-admin-token| ReviewsApi
+    AdminJs <-->|x-admin-token| DeleteApi
+    
+    %% Poznámka pod čarou
+    style AdminJs fill:#f9f,stroke:#333,stroke-width:2px
 ```
 
 Stránka funguje jako statický shell (`admin.html`) s `admin.js` jako kontrolerem. Kontroler nevyužívá samostatnou klientskou servisní vrstvu; volá přímo backendové endpointy a podle vráceného JSONu rozhoduje, zda odemknout dashboard nebo ponechat login.
