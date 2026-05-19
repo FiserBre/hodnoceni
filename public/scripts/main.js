@@ -1,11 +1,3 @@
-const HINTS = [
-  "",
-  "Velké zklamání",
-  "Nic extra",
-  "Průměr",
-  "Velmi v pořádku",
-  "Perfektní",
-];
 const GOOGLE_MAPS_URL =
   "https://www.google.com/maps/place/HiddenStory/@50.0776011,14.4322611,17.87z/data=!4m8!3m7!1s0x470b9588dd71f5c1:0x10ef13a0c6bdd331!8m2!3d50.0777501!4d14.4332348!9m1!1b1!16s%2Fg%2F11xzq89rvb?entry=ttu&g_ep=EgoyMDI2MDQyMi4wIKXMDSoASAFQAw%3D%3D";
 
@@ -37,7 +29,7 @@ let overallVal = 0;
 setupStars(document.getElementById("mainStars"), (v) => {
   overallVal = v;
   const hint = document.getElementById("mainHint");
-  hint.textContent = HINTS[v] || "";
+  hint.textContent = "";
   hint.className = "star-hint" + (v ? " filled" : "");
 });
 
