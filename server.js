@@ -100,7 +100,7 @@ app.post("/api/reviews", async (req, res) => {
     return res.status(400).json({ ok: false, error: "Neplatné hodnocení." });
   }
 
-  const flagged = overall_stars < 4;
+  const flagged = overall_stars < 5;
   const review = { overall_stars, email, message, flagged };
 
   try {
