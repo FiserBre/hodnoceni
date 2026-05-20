@@ -60,7 +60,7 @@ document.getElementById("submitBtn").addEventListener("click", async () => {
     });
     const data = await res.json();
     if (!data.ok) throw new Error(data.error);
-    showModal(overallVal >= 4);
+    showModal(overallVal);
   } catch (e) {
     err.textContent =
       "Chyba při odesílání: " + (e.message || "Zkuste to prosím znovu.");
@@ -69,19 +69,20 @@ document.getElementById("submitBtn").addEventListener("click", async () => {
   }
 });
 
-function showModal(isPositive) {
+function showModal(rating) {
   const overlay = document.getElementById("modalOverlay");
+  const isPositive = rating >= 4;
   document.getElementById("modalTitle").textContent = isPositive
     ? "Skvělé, děkujeme!"
     : "Děkujeme za zpětnou vazbu";
   document.getElementById("modalText").textContent = isPositive
-    ? "Moc si vážíme vašeho hodnocení! Pokud chcete, podpořte nás recenzí i na Google Mapách — pomůže nám to."
+    ? "Moc si vážíme vašeho hodnocení!"
     : "Vaše hodnocení jsme obdrželi a budeme se jím zabývat. Omlouváme se za jakékoli nedostatky.";
 
   const btns = document.getElementById("modalBtns");
   btns.innerHTML = "";
 
-  if (isPositive) {
+  if (rating === 5) {
     const a = document.createElement("a");
     a.href = GOOGLE_MAPS_URL;
     a.target = "_blank";
