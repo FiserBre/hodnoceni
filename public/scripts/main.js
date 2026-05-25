@@ -1,6 +1,17 @@
 const GOOGLE_MAPS_URL =
   "https://www.google.com/maps/place/HiddenStory/@50.0776011,14.4322611,17.87z/data=!4m8!3m7!1s0x470b9588dd71f5c1:0x10ef13a0c6bdd331!8m2!3d50.0777501!4d14.4332348!9m1!1b1!16s%2Fg%2F11xzq89rvb?entry=ttu&g_ep=EgoyMDI2MDQyMi4wIKXMDSoASAFQAw%3D%3D";
 
+let SVG_GOOGLE_MAPS = null;
+
+async function loadIcons() {
+  try {
+    const resp = await fetch('/icons/google-maps.svg');
+    if (resp.ok) SVG_GOOGLE_MAPS = await resp.text();
+  } catch (e) {
+    console.warn('Could not load google-maps.svg', e);
+  }
+}
+
 function setupStars(container, onSelect) {
   const labels = container.querySelectorAll("label");
   labels.forEach((lbl) => {
@@ -88,7 +99,8 @@ function showModal(rating) {
     a.target = "_blank";
     a.rel = "noopener";
     a.className = "btn-google";
-    a.textContent = "★ Ohodnotit na Google Mapách";
+    // insert icon + text
+  a.innerHTML = `${SVG_GOOGLE_MAPS || ''}<span>Ohodnotit na Google Mapách</span>`;
     btns.appendChild(a);
   }
 
@@ -110,3 +122,5 @@ document.getElementById("modalOverlay").addEventListener("click", (e) => {
     setTimeout(() => location.reload(), 350);
   }
 });
+
+loadIcons();

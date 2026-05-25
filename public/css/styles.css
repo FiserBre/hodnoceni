@@ -268,24 +268,35 @@ body::before {
 }
 
 .btn-google {
-    padding: 0.9rem;
-    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
-    color: #081018;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.9rem;
+    background: #fff;
+    color: #202124;
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
-    border: none;
-    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 999px;
     cursor: pointer;
     font-size: 0.9rem;
     text-decoration: none;
-    display: block;
-    transition: opacity 0.2s;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    transition: box-shadow 0.15s, transform 0.08s;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
 .btn-google:hover {
-    opacity: 0.88;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
+}
+
+.btn-google svg {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    display: block;
 }
 
 .btn-close {
